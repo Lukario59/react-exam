@@ -18,10 +18,7 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
   },
 };
-
-// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#root');
-
 function App() {
   const [products, setProducts] = useState([]);
   const [sortProducts, setSortProducts] = useState([]);
@@ -46,32 +43,35 @@ function App() {
   }
   let subtitle;
   const [modalIsOpen, setIsOpen] = useState(false);
-
   function openModal() {
     setIsOpen(true);
   }
-
   function afterOpenModal() {
-    // references are now sync'd and can be accessed.
     subtitle.style.color = '#f00';
   }
-
   function closeModal() {
     setIsOpen(false);
   }
 
   function handleSearch(e) {
     setSearch(e.target.value);
-    if (search.length != 0)
-      setSortProducts(products.filter(e => e.name == search));
-    else
-      setSortProducts(products);
+    let filteredItems;
+    if (e.target.value.length > 0) {
+      filteredItems = products.filter((user) =>
+        user.name.toLowerCase().includes(search.toLowerCase())
+      );
+      setSortProducts(filteredItems);
+    } else setSortProducts(products);
   }
-
   return (
     <>
       <header className='header'>
-        <input type="text" onChange={e => handleSearch(e)} />
+        <input
+          type="text"
+          value={search}
+          onChange={handleSearch}
+          placeholder='Поиск'
+        />
         <button onClick={openModal}>Корзина</button>
       </header>
       <section className="catalog">
@@ -87,6 +87,7 @@ function App() {
           {sortProducts.map((product, key) => {
             return (
               <article key={key} className="product-card">
+                <img src="https://www.coku.co.uk/cdn/shop/products/BCBBDAD0-F167-47AC-A56F-0A5354398F70_1_201_a_a3588674-a821-4289-8184-02e8f78e8da2.jpg?v=1682000784" alt="image" className="product__img" />
                 <h3 className="product__name">{product.name}</h3>
                 <p className="product__price">{product.price}</p>
                 <button className="product__btn">
@@ -110,6 +111,7 @@ function App() {
             return (
               <SwiperSlide key={key} >
                 <article className="product-card">
+                  <img src="https://www.coku.co.uk/cdn/shop/products/BCBBDAD0-F167-47AC-A56F-0A5354398F70_1_201_a_a3588674-a821-4289-8184-02e8f78e8da2.jpg?v=1682000784" alt="image" className="product__img" />
                   <h3 className="product__name">{product.name}</h3>
                   <p className="product__price">{product.price}</p>
                   <button className="product__btn" data-id={product.id}>
@@ -130,17 +132,6 @@ function App() {
           contentLabel="Cart Modal"
         >
           <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Каталог</h2>
-          {/* <div className="catalog__wrapper">
-              {cartProducts.map((product, key) => {
-                return (
-                  <article key={key} className="product-card">
-                    <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" alt="test" className="product__img" />
-                    <h3 className="product__name">{product.name}</h3>
-                    <p className="product__price">{product.price}</p>
-                  </article>
-                )
-              })}
-            </div> */}
           <Button onClick={closeModal} variant="contained">Закрыть окно</Button>
         </Modal>
       </div>

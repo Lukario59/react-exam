@@ -16,6 +16,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   column-gap: 20px;
+  row-gap: 20px;
 }
 
 .ReactModal__Content.ReactModal__Content--after-open {
@@ -32,6 +33,12 @@
   z-index: 10;
   width: 100%;
   border-radius: 6px;
+}
+.product__img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 6px;
+  max-width: 500px;
 }
 
 button {
