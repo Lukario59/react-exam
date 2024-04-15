@@ -70,7 +70,10 @@ function App() {
 
   return (
     <>
-      <input type="text" onChange={e => handleSearch(e)} />
+      <header className='header'>
+        <input type="text" onChange={e => handleSearch(e)} />
+        <button onClick={openModal}>Корзина</button>
+      </header>
       <section className="catalog">
         <div className="catalog__filters">
           <h2>Фильтры</h2>
@@ -87,43 +90,44 @@ function App() {
                 <h3 className="product__name">{product.name}</h3>
                 <p className="product__price">{product.price}</p>
                 <button className="product__btn">
-                  Buy
+                  Купить
                 </button>
               </article>
             )
           })}
         </div>
       </section>
-      <Swiper
-        modules={[Navigation, Pagination,]}
-        spaceBetween={50}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-      >
-        {sortProducts.map((product, key) => {
-          return (
-            <SwiperSlide key={key}>
-              <article className="product-card">
-                <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" alt="test" className="product__img" />
-                <h3 className="product__name">{product.name}</h3>
-                <p className="product__price">{product.price}</p>
-                <button className="product__btn" data-id={product.id}>
-                  Buy
-                </button>
-              </article>
-            </SwiperSlide>
-          )
-        })}
-      </Swiper>
-      <div>
-        <button onClick={openModal}>Open Modal</button>
+      <section className='slider_section'>
+        <h2>Новые товары</h2>
+        <Swiper
+          modules={[Navigation, Pagination,]}
+          spaceBetween={50}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+        >
+          {products.map((product, key) => {
+            return (
+              <SwiperSlide key={key} >
+                <article className="product-card">
+                  <h3 className="product__name">{product.name}</h3>
+                  <p className="product__price">{product.price}</p>
+                  <button className="product__btn" data-id={product.id}>
+                    Купить
+                  </button>
+                </article>
+              </SwiperSlide>
+            )
+          })}
+        </Swiper>
+      </section>
+      <div className='modal_section'>
         <Modal
           isOpen={modalIsOpen}
           onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}
-          contentLabel="Example Modal"
+          contentLabel="Cart Modal"
         >
           <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Каталог</h2>
           {/* <div className="catalog__wrapper">
@@ -137,7 +141,7 @@ function App() {
                 )
               })}
             </div> */}
-          <Button onClick={closeModal} variant="contained">Contained</Button>
+          <Button onClick={closeModal} variant="contained">Закрыть окно</Button>
         </Modal>
       </div>
     </>
